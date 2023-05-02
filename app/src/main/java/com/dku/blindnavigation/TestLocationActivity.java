@@ -1,9 +1,13 @@
 package com.dku.blindnavigation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +20,7 @@ import com.dku.blindnavigation.navigation.location.destination.DestinationCallba
 import com.dku.blindnavigation.navigation.location.dto.Poi;
 import com.dku.blindnavigation.tts.TTSHelper;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TestLocationActivity extends AppCompatActivity {
@@ -29,9 +34,12 @@ public class TestLocationActivity extends AppCompatActivity {
 
     private final DestinationCallback destinationCallback = new DestinationCallback();
 
+    private TextView curLocationTV;
     private TextView destinationInputTV;
     private TextView curDestinationTV;
     private TextView endDestinationTV;
+
+    private Poi startLocation;
     private List<Poi> endLocations;
 
     @Override
@@ -39,6 +47,7 @@ public class TestLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_location);
 
+        curLocationTV = findViewById(R.id.curLocationTV);
         destinationInputTV = findViewById(R.id.destinationInputTV);
         curDestinationTV = findViewById(R.id.curDestinationTV);
         endDestinationTV = findViewById(R.id.endDestinationTV);
@@ -47,11 +56,34 @@ public class TestLocationActivity extends AppCompatActivity {
 
         locationPermGranted = PermissionUtils.checkLocationPermissions(this);
         if(locationPermGranted) {
+            getDepartureInfo();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 backgroundPermGranted = PermissionUtils.checkBackgroundLocationPermissions(this);
         }
 
         initDestinationTest();
+    }
+
+    private void onGetDepartureInfo() {
+        if(startLocation == null) return;
+        curLocationTV.setText(startLocation.getName());
+    }
+
+    private void getDepartureInfo() {
+        startLocation = LocationUtils.getDepartureCoord(this);
+        if(startLocation == null) {
+            curDestinationTV.setText("위 경도를 알 수 없음");
+            return;
+        }
+
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            try {
+                String departureName = LocationUtils.getDepartureName(this, startLocation.getFrontLon(), startLocation.getFrontLat());
+                startLocation.setName(departureName);
+                onGetDepartureInfo();
+            } catch (IOException ignored) {}
+        }
+        else LocationUtils.getDepartureName(this, startLocation.getFrontLon(), startLocation.getFrontLat(), new DepartureListener());
     }
 
     private void initDestinationTest() {
@@ -98,10 +130,32 @@ public class TestLocationActivity extends AppCompatActivity {
             for (int grantResult : grantResults)
                 if (grantResult != PackageManager.PERMISSION_GRANTED) return;
             locationPermGranted = true;
+            getDepartureInfo();
 
             // before ACCESS_BACKGROUND_LOCATION granted, ACCESS_COARSE/FIND_LOCATION must be granted
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 backgroundPermGranted = PermissionUtils.checkBackgroundLocationPermissions(this);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public class DepartureListener implements Geocoder.GeocodeListener {
+        @Override
+        public void onGeocode(@NonNull List<Address> addresses) {
+            if(addresses.isEmpty()) throw new RuntimeException();
+
+            String addressLine = null;
+            for (Address location : addresses) {
+                addressLine = location.getAddressLine(0);
+                if(addressLine != null) break;
+            }
+            if(addressLine != null) startLocation.setName(addressLine);
+            if(startLocation != null) onGetDepartureInfo();
+        }
+
+        @Override
+        public void onError(@Nullable String errorMessage) {
+            Geocoder.GeocodeListener.super.onError(errorMessage);
         }
     }
 
