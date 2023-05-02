@@ -89,4 +89,10 @@
         android:textSize="25sp"
         android:text="최종 목적지" />
 
+    <Button
+        android:id="@+id/getRouteBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="경로 가져오기" />
+
 </LinearLayout>

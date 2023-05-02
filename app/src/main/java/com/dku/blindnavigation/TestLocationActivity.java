@@ -18,6 +18,9 @@ import com.dku.blindnavigation.navigation.location.LocationUtils;
 import com.dku.blindnavigation.navigation.location.destination.DestinationCallback;
 import com.dku.blindnavigation.navigation.location.destination.DestinationCallbackListener;
 import com.dku.blindnavigation.navigation.location.dto.Poi;
+import com.dku.blindnavigation.navigation.route.RouteCallback;
+import com.dku.blindnavigation.navigation.route.RouteCallbackListener;
+import com.dku.blindnavigation.navigation.route.dto.Coordinate;
 import com.dku.blindnavigation.tts.TTSHelper;
 
 import java.io.IOException;
@@ -33,6 +36,7 @@ public class TestLocationActivity extends AppCompatActivity {
     private TTSHelper ttsHelper;
 
     private final DestinationCallback destinationCallback = new DestinationCallback();
+    private final RouteCallback routeCallback = new RouteCallback();
 
     private TextView curLocationTV;
     private TextView destinationInputTV;
@@ -40,6 +44,7 @@ public class TestLocationActivity extends AppCompatActivity {
     private TextView endDestinationTV;
 
     private Poi startLocation;
+    private Poi endLocation;
     private List<Poi> endLocations;
 
     @Override
@@ -61,7 +66,12 @@ public class TestLocationActivity extends AppCompatActivity {
                 backgroundPermGranted = PermissionUtils.checkBackgroundLocationPermissions(this);
         }
 
+        destinationCallback.addListener(new DestinationListener());
+        routeCallback.addListener(new RouteListener());
+
         initDestinationTest();
+        Button getRouteBT = findViewById(R.id.getRouteBT);
+        getRouteBT.setOnClickListener(v -> LocationUtils.getRoute(startLocation, endLocation, this, routeCallback));
     }
 
     private void onGetDepartureInfo() {
@@ -90,7 +100,6 @@ public class TestLocationActivity extends AppCompatActivity {
         Button ttsTestButton = findViewById(R.id.ttsFunctionTest);
         ttsTestButton.setOnClickListener(v -> ttsHelper.speakString("TTS 기능 테스트", 1.0f, 1.0f));
 
-        destinationCallback.addListener(new DestinationListener());
         Button destinationInputBT = findViewById(R.id.destinationInputBT);
         destinationInputBT.setOnClickListener(v ->
                 LocationUtils.getDestinationInfo(destinationInputTV.getText().toString(), this, destinationCallback));
@@ -98,7 +107,7 @@ public class TestLocationActivity extends AppCompatActivity {
         Button yesDestinationBT = findViewById(R.id.yesDestinationBT);
         yesDestinationBT.setOnClickListener(v -> {
             if(!endLocations.isEmpty()) {
-                Poi endLocation = endLocations.get(0);
+                endLocation = endLocations.get(0);
                 endDestinationTV.setText(endLocation.getName());
                 Log.d(TAG, "endLocation.frontLat = " + endLocation.getFrontLat());
                 Log.d(TAG, "endLocation.frontLon = " + endLocation.getFrontLon());
@@ -168,6 +177,20 @@ public class TestLocationActivity extends AppCompatActivity {
         public void onSuccessGetDestination(List<Poi> pois) {
             endLocations = pois;
             curDestinationTV.setText(pois.get(0).getName());
+        }
+    }
+
+    public class RouteListener implements RouteCallbackListener {
+        @Override
+        public void onFailureRoute() {
+        }
+
+        @Override
+        public void onSuccessRoute(List<Coordinate> coordinates) {
+            if(coordinates.isEmpty()) return;
+            for (Coordinate coordinate : coordinates) {
+                Log.d(TAG, coordinate.toString());
+            }
         }
     }
 }
