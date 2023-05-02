@@ -12,4 +12,64 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/ttsFunctionTest" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:text="목적지 위치" />
+
+    <EditText
+        android:id="@+id/destinationInputTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:autofillHints="목적지를 입력하세요"/>
+
+    <Button
+        android:id="@+id/destinationInputBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="목적지 확인" />
+
+    <TextView
+        android:id="@+id/curDestinationTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:text="목적지 확인 전" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/noDestinationBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="아니오" />
+
+        <Button
+            android:id="@+id/yesDestinationBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="네" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/endDestinationTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:text="최종 목적지" />
+
 </LinearLayout>
