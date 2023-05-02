@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 
 import com.dku.blindnavigation.navigation.location.destination.DestinationHttpClient;
 import com.dku.blindnavigation.navigation.location.dto.Poi;
+import com.dku.blindnavigation.navigation.route.RouteHttpClient;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,5 +53,10 @@ public class LocationUtils {
     public static void getDestinationInfo(@NotNull String name, Context context, Callback callback) {
         DestinationHttpClient httpClient = DestinationHttpClient.getInstance();
         httpClient.requestDestination(name, context, callback);
+    }
+
+    public static void getRoute(Poi startLocation, Poi endLocation, Context context, Callback callback) {
+        RouteHttpClient httpClient = RouteHttpClient.getInstance();
+        httpClient.requestRoute(startLocation, endLocation, context, callback);
     }
 }
