@@ -4,4 +4,5 @@
     <string name="sk_api_route_url">https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1</string>
     <string name="sk_api_key">4jsuwXbPCf8uKW86qFnwp4IYudve7pvp6VJBATfb</string>
     <string name="locationRelatedTest">위치 관련 테스트</string>
+    <string name="ttsFunctionTest">TTS 기능 테스트</string>
 </resources>
