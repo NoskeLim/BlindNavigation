@@ -11,15 +11,15 @@ public class Poi {
     public Poi() {
     }
 
-    public Poi(double frontLon, double frontLat) {
-        this.frontLon = frontLon;
+    public Poi(double frontLat, double frontLon) {
         this.frontLat = frontLat;
+        this.frontLon = frontLon;
     }
 
-    public Poi(String name, double frontLon, double frontLat) {
+    public Poi(String name, double frontLat, double frontLon) {
         this.name = name;
-        this.frontLon = frontLon;
         this.frontLat = frontLat;
+        this.frontLon = frontLon;
     }
 
     public Poi(String name, String upperAddrName, String middleAddrName, String lowerAddrName, double frontLon, double frontLat) {

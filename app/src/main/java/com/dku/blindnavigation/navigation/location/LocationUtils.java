@@ -29,7 +29,7 @@ public class LocationUtils {
         return departure;
     }
 
-    public static String getDepartureName(Context context, double lng, double lat) throws IOException {
+    public static String getDepartureName(Context context, double lat, double lng) throws IOException {
         Geocoder geocoder = new Geocoder(context, Locale.KOREA);
         List<Address> locations = geocoder.getFromLocation(lat, lng, 1);
         if(locations.isEmpty()) throw new RuntimeException();
@@ -43,7 +43,7 @@ public class LocationUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void getDepartureName(Context context, double lng, double lat, Geocoder.GeocodeListener listener) {
+    public static void getDepartureName(Context context, double lat, double lng, Geocoder.GeocodeListener listener) {
         Geocoder geocoder = new Geocoder(context);
         geocoder.getFromLocation(lat, lng, 1, listener);
     }

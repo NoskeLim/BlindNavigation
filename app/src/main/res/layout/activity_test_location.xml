@@ -23,6 +23,14 @@
         android:text="현재 위치 주소 명" />
 
     <TextView
+        android:id="@+id/curCoordTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:text="위 경도 확인중" />
+
+    <TextView
         android:id="@+id/curLocationTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
