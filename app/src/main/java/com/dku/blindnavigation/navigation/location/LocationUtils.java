@@ -24,8 +24,6 @@ public class LocationUtils {
         GpsTracker gpsTracker = new GpsTracker(context);
         Poi departure = new Poi(gpsTracker.getLongitude(), gpsTracker.getLatitude());
 
-        // FOR TEST
-//        departure = new Poi(127.125801, 37.323222);
         if(departure.getFrontLat() == 0.0 || departure.getFrontLon() == 0.0) return null;
         gpsTracker.stopUsingGPS();
         return departure;
