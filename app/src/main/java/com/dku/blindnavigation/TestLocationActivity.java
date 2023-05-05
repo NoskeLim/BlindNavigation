@@ -38,6 +38,7 @@ public class TestLocationActivity extends AppCompatActivity {
     private final DestinationCallback destinationCallback = new DestinationCallback();
     private final RouteCallback routeCallback = new RouteCallback();
 
+    private TextView curCoordTV;
     private TextView curLocationTV;
     private TextView destinationInputTV;
     private TextView curDestinationTV;
@@ -52,6 +53,7 @@ public class TestLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_location);
 
+        curCoordTV = findViewById(R.id.curCoordTV);
         curLocationTV = findViewById(R.id.curLocationTV);
         destinationInputTV = findViewById(R.id.destinationInputTV);
         curDestinationTV = findViewById(R.id.curDestinationTV);
@@ -61,7 +63,6 @@ public class TestLocationActivity extends AppCompatActivity {
 
         locationPermGranted = PermissionUtils.checkLocationPermissions(this);
         if(locationPermGranted) {
-            getDepartureInfo();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 backgroundPermGranted = PermissionUtils.checkBackgroundLocationPermissions(this);
         }
@@ -74,6 +75,12 @@ public class TestLocationActivity extends AppCompatActivity {
         getRouteBT.setOnClickListener(v -> LocationUtils.getRoute(startLocation, endLocation, this, routeCallback));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(locationPermGranted) getDepartureInfo();
+    }
+
     private void onGetDepartureInfo() {
         if(startLocation == null) return;
         curLocationTV.setText(startLocation.getName());
@@ -82,10 +89,12 @@ public class TestLocationActivity extends AppCompatActivity {
     private void getDepartureInfo() {
         startLocation = LocationUtils.getDepartureCoord(this);
         if(startLocation == null) {
-            curDestinationTV.setText("위 경도를 알 수 없음");
+            curLocationTV.setText("출발지 위 경도를 알 수 없음");
             return;
         }
 
+        String curCoordStr = "[" + startLocation.getFrontLat() + ", " + startLocation.getFrontLon() + "]";
+        curCoordTV.setText(curCoordStr);
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             try {
                 String departureName = LocationUtils.getDepartureName(this, startLocation.getFrontLon(), startLocation.getFrontLat());
@@ -93,7 +102,7 @@ public class TestLocationActivity extends AppCompatActivity {
                 onGetDepartureInfo();
             } catch (IOException ignored) {}
         }
-        else LocationUtils.getDepartureName(this, startLocation.getFrontLon(), startLocation.getFrontLat(), new DepartureListener());
+        else LocationUtils.getDepartureName(this, startLocation.getFrontLat(), startLocation.getFrontLon(), new DepartureListener());
     }
 
     private void initDestinationTest() {
@@ -109,8 +118,6 @@ public class TestLocationActivity extends AppCompatActivity {
             if(!endLocations.isEmpty()) {
                 endLocation = endLocations.get(0);
                 endDestinationTV.setText(endLocation.getName());
-                Log.d(TAG, "endLocation.frontLat = " + endLocation.getFrontLat());
-                Log.d(TAG, "endLocation.frontLon = " + endLocation.getFrontLon());
             }
         });
 

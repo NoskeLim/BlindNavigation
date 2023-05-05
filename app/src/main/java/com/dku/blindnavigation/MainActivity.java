@@ -13,5 +13,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button locationTestButton = findViewById(R.id.locationTestButton);
         locationTestButton.setOnClickListener(v -> startActivity(new Intent(this, TestLocationActivity.class)));
+
+        Button degreeTestButton = findViewById(R.id.degreeTestBT);
+        degreeTestButton.setOnClickListener(v -> startActivity(new Intent(this, TestDirectionActivity.class)));
     }
 }
