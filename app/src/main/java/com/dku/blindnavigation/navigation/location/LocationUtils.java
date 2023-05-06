@@ -20,15 +20,6 @@ import java.util.Locale;
 import okhttp3.Callback;
 
 public class LocationUtils {
-    public static Poi getDepartureCoord(Context context) {
-        GpsTracker gpsTracker = new GpsTracker(context);
-        Poi departure = new Poi(gpsTracker.getLongitude(), gpsTracker.getLatitude());
-
-        if(departure.getFrontLat() == 0.0 || departure.getFrontLon() == 0.0) return null;
-        gpsTracker.stopUsingGPS();
-        return departure;
-    }
-
     public static String getDepartureName(Context context, double lat, double lng) throws IOException {
         Geocoder geocoder = new Geocoder(context, Locale.KOREA);
         List<Address> locations = geocoder.getFromLocation(lat, lng, 1);
@@ -44,7 +35,7 @@ public class LocationUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     public static void getDepartureName(Context context, double lat, double lng, Geocoder.GeocodeListener listener) {
-        Geocoder geocoder = new Geocoder(context);
+        Geocoder geocoder = new Geocoder(context, Locale.KOREA);
         geocoder.getFromLocation(lat, lng, 1, listener);
     }
 
