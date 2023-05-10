@@ -1,4 +1,4 @@
-package com.dku.blindnavigation;
+package com.dku.blindnavigation.test.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.dku.blindnavigation.R;
 import com.dku.blindnavigation.navigation.direction.DirectionCalculator;
 import com.dku.blindnavigation.navigation.direction.DirectionType;
 import com.dku.blindnavigation.navigation.location.dto.Poi;

@@ -20,7 +20,7 @@ import java.util.Locale;
 import okhttp3.Callback;
 
 public class LocationUtils {
-    public static String getDepartureName(Context context, double lat, double lng) throws IOException {
+    public static String getLocationNameByCoord(Context context, double lat, double lng) throws IOException {
         Geocoder geocoder = new Geocoder(context, Locale.KOREA);
         List<Address> locations = geocoder.getFromLocation(lat, lng, 1);
         if(locations.isEmpty()) throw new RuntimeException();
@@ -34,12 +34,12 @@ public class LocationUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void getDepartureName(Context context, double lat, double lng, Geocoder.GeocodeListener listener) {
+    public static void getLocationNameByCoord(Context context, double lat, double lng, Geocoder.GeocodeListener listener) {
         Geocoder geocoder = new Geocoder(context, Locale.KOREA);
         geocoder.getFromLocation(lat, lng, 1, listener);
     }
 
-    public static void getDestinationInfo(@NotNull String name, Context context, Callback callback) {
+    public static void getLocationInfoByName(@NotNull String name, Context context, Callback callback) {
         DestinationHttpClient httpClient = DestinationHttpClient.getInstance();
         httpClient.requestDestination(name, context, callback);
     }

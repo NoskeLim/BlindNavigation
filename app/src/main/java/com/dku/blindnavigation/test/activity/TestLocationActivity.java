@@ -1,4 +1,4 @@
-package com.dku.blindnavigation;
+package com.dku.blindnavigation.test.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +17,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dku.blindnavigation.PermissionUtils;
+import com.dku.blindnavigation.R;
 import com.dku.blindnavigation.navigation.location.LocationUtils;
 import com.dku.blindnavigation.navigation.location.destination.DestinationCallback;
 import com.dku.blindnavigation.navigation.location.destination.DestinationCallbackListener;
@@ -81,7 +83,7 @@ public class TestLocationActivity extends AppCompatActivity {
 
         Button destinationInputBT = findViewById(R.id.destinationInputBT);
         destinationInputBT.setOnClickListener(v ->
-                LocationUtils.getDestinationInfo(destinationInputTV.getText().toString(), this, destinationCallback));
+                LocationUtils.getLocationInfoByName(destinationInputTV.getText().toString(), this, destinationCallback));
 
         Button yesDestinationBT = findViewById(R.id.yesDestinationBT);
         yesDestinationBT.setOnClickListener(v -> {
@@ -147,12 +149,12 @@ public class TestLocationActivity extends AppCompatActivity {
     private void getDepartureInfo() {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             try {
-                String departureName = LocationUtils.getDepartureName(this, startLocation.getFrontLat(), startLocation.getFrontLon());
+                String departureName = LocationUtils.getLocationNameByCoord(this, startLocation.getFrontLat(), startLocation.getFrontLon());
                 startLocation.setName(departureName);
                 onGetDepartureInfo();
             } catch (IOException ignored) {}
         }
-        else LocationUtils.getDepartureName(this, startLocation.getFrontLat(), startLocation.getFrontLon(), new DepartureListener());
+        else LocationUtils.getLocationNameByCoord(this, startLocation.getFrontLat(), startLocation.getFrontLon(), new DepartureListener());
     }
 
     @Override

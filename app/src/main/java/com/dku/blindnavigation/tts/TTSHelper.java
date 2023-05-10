@@ -24,10 +24,14 @@ public class TTSHelper {
         tts.speak(string, TextToSpeech.QUEUE_FLUSH, null, string);
     }
 
-    @Override
-    protected void finalize() throws Throwable {
+    public void stopUsing() {
         tts.stop();
         tts.shutdown();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        stopUsing();
         super.finalize();
     }
 }
