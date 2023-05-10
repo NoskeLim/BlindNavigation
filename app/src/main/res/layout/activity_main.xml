@@ -21,8 +21,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="98dp"
-        android:text="방위각 관룐 테스트"
+        android:text="방위각 관련 테스트"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationTestButton" />
+
+    <Button
+        android:id="@+id/navigationTestBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="229dp"
+        android:layout_marginBottom="230dp"
+        android:text="네비게이션 테스트"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/degreeTestBT"
         app:layout_constraintTop_toBottomOf="@+id/locationTestButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
