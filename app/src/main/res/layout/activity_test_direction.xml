@@ -16,7 +16,7 @@
         android:textSize="30sp" />
 
     <EditText
-        android:id="@+id/startLngEditTV"
+        android:id="@+id/startLatEditTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -24,7 +24,7 @@
         android:textSize="20sp"
         android:hint="위도" />
     <EditText
-        android:id="@+id/startLatEditTV"
+        android:id="@+id/startLngEditTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -41,15 +41,16 @@
         android:textSize="30sp" />
 
     <EditText
-        android:id="@+id/endLngEditTV"
+        android:id="@+id/endLatEditTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
         android:textSize="20sp"
         android:hint="위도" />
+
     <EditText
-        android:id="@+id/endLatEditTV"
+        android:id="@+id/endLngEditTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"

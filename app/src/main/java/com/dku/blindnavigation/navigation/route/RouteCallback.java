@@ -2,7 +2,7 @@ package com.dku.blindnavigation.navigation.route;
 
 import androidx.annotation.NonNull;
 
-import com.dku.blindnavigation.navigation.route.dto.Coordinate;
+import com.dku.blindnavigation.navigation.dto.Poi;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,7 +30,7 @@ public class RouteCallback implements Callback {
 
     @Override
     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        ArrayList<Poi> coordinates = new ArrayList<>();
 
         ObjectMapper mapper = new ObjectMapper();
         String responseString = Objects.requireNonNull(response.body()).string();
@@ -41,20 +41,20 @@ public class RouteCallback implements Callback {
             String type = geometryNode.path("type").asText();
 
             JsonNode coordinatesNode = geometryNode.path("coordinates");
-            addCoordinatesToList(coordinates, type, coordinatesNode);
+            addPoisToList(coordinates, type, coordinatesNode);
         }
 
         for (RouteCallbackListener listener : listeners)
             listener.onSuccessRoute(coordinates);
     }
 
-    private static void addCoordinatesToList(ArrayList<Coordinate> coordinates, String type, JsonNode coordinatesNode) {
+    private static void addPoisToList(ArrayList<Poi> coordinates, String type, JsonNode coordinatesNode) {
         if(type.equals("Point")) {
-            coordinates.add(new Coordinate(coordinatesNode.get(0).asDouble(), coordinatesNode.get(1).asDouble()));
+            coordinates.add(new Poi(coordinatesNode.get(1).asDouble(), coordinatesNode.get(0).asDouble()));
         }
         else if (type.equals("LineString")) {
             for (JsonNode coordinateNode : coordinatesNode)
-                coordinates.add(new Coordinate(coordinateNode.get(0).asDouble(), coordinateNode.get(1).asDouble()));
+                coordinates.add(new Poi(coordinateNode.get(1).asDouble(), coordinateNode.get(0).asDouble()));
         }
     }
 }

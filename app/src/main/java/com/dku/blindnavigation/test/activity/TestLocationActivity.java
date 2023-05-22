@@ -22,10 +22,9 @@ import com.dku.blindnavigation.R;
 import com.dku.blindnavigation.navigation.location.LocationUtils;
 import com.dku.blindnavigation.navigation.location.destination.DestinationCallback;
 import com.dku.blindnavigation.navigation.location.destination.DestinationCallbackListener;
-import com.dku.blindnavigation.navigation.location.dto.Poi;
+import com.dku.blindnavigation.navigation.dto.Poi;
 import com.dku.blindnavigation.navigation.route.RouteCallback;
 import com.dku.blindnavigation.navigation.route.RouteCallbackListener;
-import com.dku.blindnavigation.navigation.route.dto.Coordinate;
 import com.dku.blindnavigation.tts.TTSHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -220,10 +219,10 @@ public class TestLocationActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onSuccessRoute(List<Coordinate> coordinates) {
-            if(coordinates.isEmpty()) return;
-            for (Coordinate coordinate : coordinates) {
-                Log.d(TAG, coordinate.toString());
+        public void onSuccessRoute(List<Poi> pois) {
+            if(pois.isEmpty()) return;
+            for (Poi poi : pois) {
+                Log.d(TAG, poi.toString());
             }
         }
     }

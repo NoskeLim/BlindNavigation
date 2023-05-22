@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.dku.blindnavigation.R;
 import com.dku.blindnavigation.navigation.direction.DirectionCalculator;
 import com.dku.blindnavigation.navigation.direction.DirectionType;
-import com.dku.blindnavigation.navigation.location.dto.Poi;
+import com.dku.blindnavigation.navigation.dto.Poi;
 
 public class TestDirectionActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager sensorManager;
@@ -60,18 +60,14 @@ public class TestDirectionActivity extends AppCompatActivity implements SensorEv
     protected void onResume() {
         super.onResume();
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if (accelerometer != null) {
+        if(accelerometer != null)
             sensorManager.registerListener(this, accelerometer,
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-            accelerometerFinish = true;
-        }
+
         Sensor magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        if (magneticField != null) {
+        if(magneticField != null)
             sensorManager.registerListener(this, magneticField,
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-
-            magnetometerFinish = true;
-        }
     }
 
     @Override
@@ -84,10 +80,12 @@ public class TestDirectionActivity extends AppCompatActivity implements SensorEv
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.length);
+            accelerometerFinish = true;
         }
 
         else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             System.arraycopy(event.values, 0, magnetometerReading, 0, magnetometerReading.length);
+            magnetometerFinish = true;
         }
 
         updateOrientationAngles();
@@ -99,10 +97,10 @@ public class TestDirectionActivity extends AppCompatActivity implements SensorEv
     }
 
     public void updateOrientationAngles() {
-        SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
-        SensorManager.getOrientation(rotationMatrix, orientationAngles);
-
         if(accelerometerFinish && magnetometerFinish) {
+            boolean isSuccess = SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
+            if(!isSuccess) return;
+            SensorManager.getOrientation(rotationMatrix, orientationAngles);
             degree = (Math.toDegrees(orientationAngles[0]) + 360) % 360;
             degreeTV.setText(String.valueOf(degree));
         }

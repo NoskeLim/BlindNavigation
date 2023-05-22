@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.dku.blindnavigation.R;
-import com.dku.blindnavigation.navigation.location.dto.Poi;
+import com.dku.blindnavigation.navigation.dto.Poi;
 
 import okhttp3.Callback;
 import okhttp3.FormBody;

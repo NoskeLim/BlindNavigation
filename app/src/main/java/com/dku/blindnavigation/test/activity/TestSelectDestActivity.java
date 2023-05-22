@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,11 +16,12 @@ import android.widget.TextView;
 import com.dku.blindnavigation.R;
 import com.dku.blindnavigation.navigation.direction.OrientationListener;
 import com.dku.blindnavigation.navigation.location.LocationUtils;
-import com.dku.blindnavigation.navigation.location.departure.DepartureCoordProvider;
-import com.dku.blindnavigation.navigation.location.departure.DepartureNameProvider;
-import com.dku.blindnavigation.navigation.location.dto.Poi;
+import com.dku.blindnavigation.navigation.location.gps.CurLocationCoordProvider;
+import com.dku.blindnavigation.navigation.location.gps.LocationNameProvider;
+import com.dku.blindnavigation.navigation.dto.Poi;
 import com.dku.blindnavigation.navigation.route.RouteCallback;
 import com.dku.blindnavigation.navigation.route.RouteListener;
+import com.dku.blindnavigation.test.service.TestNavigationService;
 import com.dku.blindnavigation.tts.TTSHelper;
 
 import java.lang.ref.WeakReference;
@@ -30,8 +32,8 @@ public class TestSelectDestActivity extends AppCompatActivity{
     private Poi departureLocation;
     private List<Poi> destinationLocations;
     private OrientationListener orientationListener;
-    private DepartureCoordProvider departureCoordProvider;
-    private DepartureNameProvider departureNameProvider;
+    private CurLocationCoordProvider curLocationCoordProvider;
+    private LocationNameProvider locationNameProvider;
     private final RouteCallback routeCallback = new RouteCallback();
     private TextView destNameTV;
     private TextView curLocNameTV;
@@ -53,22 +55,22 @@ public class TestSelectDestActivity extends AppCompatActivity{
             Bundle msgData = msg.getData();
             int eventType = msgData.getInt("eventType");
 
-            if(eventType == 0) {
+            if(eventType == OrientationListener.EVENT_TYPE) {
                 activity.bundle.putDouble("degree", msgData.getDouble("degree"));
                 return;
             }
 
             boolean status = msgData.getBoolean("status");
             switch (eventType) {
-                case 1: //Departure Coordinate
+                case CurLocationCoordProvider.EVENT_TYPE: //Departure Coordinate
                     handleDestinationCoord(activity, msgData, status);
                     break;
 
-                case 2: //Departure Name
+                case LocationNameProvider.EVENT_TYPE: //Departure Name
                     handleDestinationName(activity, msgData, status);
                     break;
 
-                case 3: //Route
+                case RouteListener.EVENT_TYPE: //Route
                     handleRoute(activity, msgData, status);
                     break;
             }
@@ -79,8 +81,9 @@ public class TestSelectDestActivity extends AppCompatActivity{
                 activity.ttsHelper.speakString("현재 위치 청보를 가져올 수 없습니다", 1f, 1f);
                 return;
             }
-            activity.departureLocation = msgData.getParcelable("departureCoord");
-            activity.departureNameProvider.getDepartureInfo(
+            activity.departureLocation = msgData.getParcelable("curLocationCoord");
+            activity.bundle.putParcelable("departureLocation", activity.departureLocation);
+            activity.locationNameProvider.getDepartureInfo(
                     activity, activity.departureLocation.getFrontLat(), activity.departureLocation.getFrontLon());
         }
 
@@ -101,9 +104,16 @@ public class TestSelectDestActivity extends AppCompatActivity{
                 return;
             }
             activity.bundle.putParcelableArrayList("route", msgData.getParcelableArrayList("route"));
-            Intent intent = new Intent(activity, TestNavigationActivity.class);
+//            Intent intent = new Intent(activity, TestNavigationActivity.class);
+            Intent intent = new Intent(activity, TestNavigationService.class);
             intent.putExtras(activity.bundle);
-            activity.startActivity(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                activity.startForegroundService(intent);
+            }
+            else {
+                activity.startService(intent);
+            }
+//            activity.startActivity(intent);
         }
     }
 
@@ -114,8 +124,8 @@ public class TestSelectDestActivity extends AppCompatActivity{
         destinationLocations = getIntent().getParcelableArrayListExtra("pois");
 
         orientationListener = new OrientationListener((SensorManager) getSystemService(SENSOR_SERVICE), handler);
-        departureCoordProvider = new DepartureCoordProvider(this, handler);
-        departureNameProvider = new DepartureNameProvider(handler);
+        curLocationCoordProvider = new CurLocationCoordProvider(this, handler);
+        locationNameProvider = new LocationNameProvider(handler);
 
         routeCallback.addListener(new RouteListener(handler));
 
@@ -146,7 +156,7 @@ public class TestSelectDestActivity extends AppCompatActivity{
         super.onResume();
         ttsHelper = new TTSHelper(this);
         orientationListener.registerSensorListeners();
-        departureCoordProvider.startRequestLocation();
+        curLocationCoordProvider.startRequestLocation();
     }
 
     @Override
@@ -154,6 +164,6 @@ public class TestSelectDestActivity extends AppCompatActivity{
         super.onPause();
         ttsHelper.stopUsing();
         orientationListener.unregisterSensorListeners();
-        departureCoordProvider.stopRequestLocation();
+        curLocationCoordProvider.stopRequestLocation();
     }
 }

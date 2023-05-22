@@ -1,4 +1,4 @@
-package com.dku.blindnavigation.navigation.location.dto;
+package com.dku.blindnavigation.navigation.dto;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -84,5 +84,27 @@ public class Poi implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Poi poi = (Poi) o;
+
+        if (Double.compare(poi.frontLon, frontLon) != 0) return false;
+        return Double.compare(poi.frontLat, frontLat) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(frontLon);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(frontLat);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

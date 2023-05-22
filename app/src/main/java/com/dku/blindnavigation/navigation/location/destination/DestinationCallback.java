@@ -2,7 +2,7 @@ package com.dku.blindnavigation.navigation.location.destination;
 
 import androidx.annotation.NonNull;
 
-import com.dku.blindnavigation.navigation.location.dto.DestinationResponse;
+import com.dku.blindnavigation.navigation.dto.DestinationResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
