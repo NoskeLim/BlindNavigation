@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 
-import com.dku.blindnavigation.navigation.location.dto.Poi;
+import com.dku.blindnavigation.navigation.dto.Poi;
 
 import java.util.ArrayList;
 import java.util.List;

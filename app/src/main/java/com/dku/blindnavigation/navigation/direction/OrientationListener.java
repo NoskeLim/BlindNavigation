@@ -11,6 +11,7 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 
 public class OrientationListener  implements SensorEventListener {
+    public static final int EVENT_TYPE = 400;
     private final Handler handler;
     private final SensorManager sensorManager;
     private final float[] accelerometerReading = new float[3];
@@ -50,9 +51,9 @@ public class OrientationListener  implements SensorEventListener {
         SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
         SensorManager.getOrientation(rotationMatrix, orientationAngles);
 
-        if(accelerometerFinish && magnetometerFinish && degree < 0) {
+        if(accelerometerFinish && magnetometerFinish) {
             degree = (Math.toDegrees(orientationAngles[0]) + 360) % 360;
-            sendDegreeToHandler();
+            if(degree != 0.0) sendDegreeToHandler();
         }
     }
 
@@ -86,7 +87,7 @@ public class OrientationListener  implements SensorEventListener {
     @NonNull
     private Bundle generateBundleByDegree() {
         Bundle bundle = new Bundle();
-        bundle.putInt("eventType", 0);
+        bundle.putInt("eventType", EVENT_TYPE);
         bundle.putDouble("degree", degree);
         return bundle;
     }

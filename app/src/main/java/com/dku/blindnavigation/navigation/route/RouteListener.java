@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
-import com.dku.blindnavigation.navigation.route.dto.Coordinate;
+
+import com.dku.blindnavigation.navigation.dto.Poi;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RouteListener implements RouteCallbackListener{
+    public static final int EVENT_TYPE = 300;
     private final Handler handler;
 
     public RouteListener(Handler handler) {
@@ -22,12 +24,12 @@ public class RouteListener implements RouteCallbackListener{
     }
 
     @Override
-    public void onSuccessRoute(List<Coordinate> coordinates) {
-        if(coordinates.isEmpty()) {
+    public void onSuccessRoute(List<Poi> pois) {
+        if(pois.isEmpty()) {
             sendErrorToHandler();
             return;
         }
-        sendRouteToHandler(coordinates);
+        sendRouteToHandler(pois);
     }
 
     private void sendErrorToHandler() {
@@ -35,9 +37,9 @@ public class RouteListener implements RouteCallbackListener{
         sendBundleToHandler(bundle);
     }
 
-    private void sendRouteToHandler(List<Coordinate> coordinates) {
+    private void sendRouteToHandler(List<Poi> pois) {
         Bundle bundle = generateBundle(true);
-        bundle.putParcelableArrayList("route", (ArrayList<? extends Parcelable>) coordinates);
+        bundle.putParcelableArrayList("route", (ArrayList<? extends Parcelable>) pois);
         sendBundleToHandler(bundle);
     }
 
@@ -49,7 +51,7 @@ public class RouteListener implements RouteCallbackListener{
 
     public Bundle generateBundle(boolean status) {
         Bundle bundle = new Bundle();
-        bundle.putInt("eventType", 3);
+        bundle.putInt("eventType", EVENT_TYPE);
         bundle.putBoolean("status", status);
         return bundle;
     }

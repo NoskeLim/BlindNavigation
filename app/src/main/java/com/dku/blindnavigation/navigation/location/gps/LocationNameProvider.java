@@ -1,4 +1,4 @@
-package com.dku.blindnavigation.navigation.location.departure;
+package com.dku.blindnavigation.navigation.location.gps;
 
 import android.content.Context;
 import android.location.Address;
@@ -17,10 +17,11 @@ import com.dku.blindnavigation.navigation.location.LocationUtils;
 import java.io.IOException;
 import java.util.List;
 
-public class DepartureNameProvider {
+public class LocationNameProvider {
+    public static final int EVENT_TYPE = 200;
     private final Handler handler;
 
-    public DepartureNameProvider(Handler handler) {
+    public LocationNameProvider(Handler handler) {
         this.handler = handler;
     }
 
@@ -76,7 +77,7 @@ public class DepartureNameProvider {
     @NonNull
     private static Bundle generateBundleByLocation(boolean status) {
         Bundle bundle = new Bundle();
-        bundle.putInt("eventType", 2);
+        bundle.putInt("eventType", EVENT_TYPE);
         bundle.putBoolean("status", status);
         return bundle;
     }

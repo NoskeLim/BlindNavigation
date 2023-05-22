@@ -1,4 +1,4 @@
-package com.dku.blindnavigation.navigation.location.dto;
+package com.dku.blindnavigation.navigation.dto;
 
 import java.util.List;
 
