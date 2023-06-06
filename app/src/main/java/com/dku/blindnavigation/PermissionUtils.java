@@ -17,20 +17,29 @@ public class PermissionUtils {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+    private static final String[] bluetoothPermissionsBeforeVersionCodeS = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.BLUETOOTH
+    };
+
+    private static final String[] bluetoothPermissionsAfterVersionCodeS = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT
+    };
+
+    private static void requestPermissions(Activity activity, List<String> permissions) {
+        ActivityCompat.requestPermissions(activity,
+                permissions.toArray(new String[permissions.size()]),
+                PERMISSION_CODE);
+    }
 
     public static boolean checkLocationPermissions(Activity activity) {
-        List<String> deniedPermissions = new ArrayList<>();
-        for (String permission : locationPermissions) {
-            if(ActivityCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
-                deniedPermissions.add(permission);
-            }
-        }
-
+        List<String> deniedPermissions = getDeniedPermissions(locationPermissions, activity);
         if(deniedPermissions.isEmpty()) return true;
-
-        String[] deniedPermissionArray = new String[deniedPermissions.size()];
-        ActivityCompat.requestPermissions(activity, deniedPermissions.toArray(deniedPermissionArray), PERMISSION_CODE);
+        requestPermissions(activity, deniedPermissions);
         return false;
     }
 
@@ -43,5 +52,25 @@ public class PermissionUtils {
             return false;
         }
         return true;
+    }
+
+    public static boolean checkBluetoothPermissions(Activity activity) {
+        List<String> deniedPermissions =
+                getDeniedPermissions(Build.VERSION.SDK_INT < Build.VERSION_CODES.S ?
+                        bluetoothPermissionsBeforeVersionCodeS : bluetoothPermissionsAfterVersionCodeS, activity);
+        if(deniedPermissions.isEmpty()) return true;
+        requestPermissions(activity, deniedPermissions);
+        return false;
+    }
+
+    private static List<String> getDeniedPermissions(String[] bluetoothPermissions, Activity activity) {
+        List<String> deniedPermissions = new ArrayList<>();
+        for (String permission : bluetoothPermissions) {
+            if(ActivityCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
+                deniedPermissions.add(permission);
+            }
+        }
+        return deniedPermissions;
     }
 }
