@@ -5,4 +5,20 @@
     <string name="sk_api_key">4jsuwXbPCf8uKW86qFnwp4IYudve7pvp6VJBATfb</string>
     <string name="locationRelatedTest">위치 관련 테스트</string>
     <string name="ttsFunctionTest">TTS 기능 테스트</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="mainMenuTitle">NAVI</string>
+    <string name="routeGuideBT">경로 안내</string>
+    <string name="btConnect">블루투스 연결</string>
+    <string name="setting">환경 설정</string>
+    <string name="exit">종료</string>
+    <string name="destinationSelectTitle">목적지</string>
+    <string name="selectDestination">목적지 안내</string>
+    <string name="nextDestinationBT">다음 목적지</string>
+    <string name="toMain">메인으로</string>
+    <string name="findDestination">목적지 검색</string>
+    <string name="inquiry">문의사항</string>
+    <string name="usage">사용법</string>
+    <string name="ttsSpeed">TTS 속도</string>
+    <string name="testTTS">테스트</string>
+    <string name="saveTTSSpeed">저장</string>
 </resources>

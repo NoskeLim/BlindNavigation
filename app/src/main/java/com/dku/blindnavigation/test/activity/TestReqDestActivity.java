@@ -39,7 +39,7 @@ public class TestReqDestActivity extends AppCompatActivity {
             Bundle msgData = msg.getData();
 
             if(!msgData.getBoolean("status")) {
-                activity.ttsHelper.speakString("목적지를 검색할 수 없습니다", 1.0f, 1.0f);
+                activity.ttsHelper.speakString("목적지를 검색할 수 없습니다", 1);
                 return;
             }
 

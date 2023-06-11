@@ -1,4 +1,4 @@
-package com.dku.blindnavigation.test.service;
+package com.dku.blindnavigation.service;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -19,20 +19,20 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import com.dku.blindnavigation.test.activity.TestMainActivity;
+import com.dku.blindnavigation.activity.guide.DestinationArriveActivity;
 import com.dku.blindnavigation.navigation.direction.DirectionCalculator;
 import com.dku.blindnavigation.navigation.direction.DirectionType;
 import com.dku.blindnavigation.navigation.dto.Poi;
 import com.dku.blindnavigation.navigation.location.LocationUtils;
 import com.dku.blindnavigation.navigation.location.gps.CurLocationCoordProvider;
+import com.dku.blindnavigation.test.activity.TestMainActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class TestNavigationService extends Service {
-    private final boolean isDebug = true;
-    private static final String TAG = "TestNavigationService";
+public class NavigationService extends Service {
+    private static final String TAG = "NavigationService";
     public static final String CHANNEL_ID = "BlindNavigationChannel";
     private static final int REACH_DISTANCE = 20;
     private Poi prevLocation;
@@ -40,15 +40,12 @@ public class TestNavigationService extends Service {
     private Queue<Poi> routes;
 
     private CurLocationCoordProvider curLocationCoordProvider;
-    private final Handler handler = new TestNavigationService.EventHandler(this);
-
-    public TestNavigationService() {
-    }
+    private final Handler handler = new NavigationService.EventHandler(this);
 
     private static final class EventHandler extends Handler {
-        private final WeakReference<TestNavigationService> reference;
+        private final WeakReference<NavigationService> reference;
 
-        public EventHandler(TestNavigationService service) {
+        public EventHandler(NavigationService service) {
             super(Looper.getMainLooper());
             this.reference = new WeakReference<>(service);
         }
@@ -56,7 +53,7 @@ public class TestNavigationService extends Service {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            TestNavigationService service = reference.get();
+            NavigationService service = reference.get();
             Bundle msgData = msg.getData();
             boolean status = msgData.getBoolean("status");
 
@@ -71,19 +68,13 @@ public class TestNavigationService extends Service {
                 assert nextLocation != null;
                 DirectionType nextDirection =
                         DirectionCalculator.getNextDirection(service.prevLocation, service.curLocation, nextLocation);
-
-                if(service.isDebug) {
-                    Log.d(TAG, String.valueOf(nextDirection));
-                    String nextLocationString = "[" + nextLocation.getFrontLat() + ", " + nextLocation.getFrontLon() + "]";
-                    Log.d(TAG, nextLocationString);
-                }
+                Log.d(TAG, nextDirection.toString());
             }
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand called");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             createNotificationChannel();
         startForeground(1, createNotification());
@@ -95,8 +86,7 @@ public class TestNavigationService extends Service {
         Poi nextLocation = getNextLocation(curLocation);
         if (nextLocation == null) {
             Log.d(TAG, "arrive destination");
-            stopForeground(true);
-            stopSelf();
+            arriveDestination();
         }
 
         assert nextLocation != null;
@@ -105,12 +95,6 @@ public class TestNavigationService extends Service {
 
         curLocationCoordProvider = new CurLocationCoordProvider(this, handler);
         curLocationCoordProvider.startRequestLocation();
-
-        if(isDebug) {
-            String nextLocationString = "[" + nextLocation.getFrontLat() + ", " + nextLocation.getFrontLon() + "]";
-            Log.d(TAG, nextLocationString);
-            Log.d(TAG, String.valueOf(nextDirection));
-        }
 
         return START_NOT_STICKY;
     }
@@ -136,14 +120,21 @@ public class TestNavigationService extends Service {
         Poi nextLocationCoord = routes.peek();
         if (nextLocationCoord == null) {
             Log.d(TAG, "arrive destination");
-            stopForeground(true);
-            stopSelf();
+            arriveDestination();
             return false;
         }
 
         double distance = LocationUtils.getDistance(curLocation.getFrontLat(), curLocation.getFrontLon(),
                 nextLocationCoord.getFrontLat(), nextLocationCoord.getFrontLon());
         return distance <= REACH_DISTANCE;
+    }
+
+    private void arriveDestination() {
+        Intent intent = new Intent(this, DestinationArriveActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        stopForeground(true);
+        stopSelf();
     }
 
     @Nullable

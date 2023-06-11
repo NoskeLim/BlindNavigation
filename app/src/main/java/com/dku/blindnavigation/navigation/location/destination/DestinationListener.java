@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DestinationListener implements DestinationCallbackListener {
+    public static final int EVENT_TYPE = 100;
     private final Handler handler;
 
     public DestinationListener(Handler handler) {
@@ -46,6 +47,7 @@ public class DestinationListener implements DestinationCallbackListener {
 
     public Bundle generateBundle(boolean status) {
         Bundle bundle = new Bundle();
+        bundle.putInt("eventType", EVENT_TYPE);
         bundle.putBoolean("status", status);
         return bundle;
     }

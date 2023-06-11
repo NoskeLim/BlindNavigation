@@ -11,7 +11,7 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 
 public class OrientationListener  implements SensorEventListener {
-    public static final int EVENT_TYPE = 400;
+    public static final int EVENT_TYPE = 500;
     private final Handler handler;
     private final SensorManager sensorManager;
     private final float[] accelerometerReading = new float[3];

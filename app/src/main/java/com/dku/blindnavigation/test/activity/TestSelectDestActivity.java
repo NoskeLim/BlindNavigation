@@ -78,7 +78,7 @@ public class TestSelectDestActivity extends AppCompatActivity{
 
         private static void handleDestinationCoord(TestSelectDestActivity activity, Bundle msgData, boolean status) {
             if(!status) {
-                activity.ttsHelper.speakString("현재 위치 청보를 가져올 수 없습니다", 1f, 1f);
+                activity.ttsHelper.speakString("현재 위치 청보를 가져올 수 없습니다", 1);
                 return;
             }
             activity.departureLocation = msgData.getParcelable("curLocationCoord");
@@ -89,7 +89,7 @@ public class TestSelectDestActivity extends AppCompatActivity{
 
         private static void handleDestinationName(TestSelectDestActivity activity, Bundle msgData, boolean status) {
             if(!status) {
-                activity.ttsHelper.speakString("현재 주변의 건물의 이름을 가져올 수 없습니다", 1f, 1f);
+                activity.ttsHelper.speakString("현재 주변의 건물의 이름을 가져올 수 없습니다", 1);
                 activity.curLocNameTV.setText("현재 주변의 건물의 이름을 가져올 수 없습니다");
                 return;
             }
@@ -100,7 +100,7 @@ public class TestSelectDestActivity extends AppCompatActivity{
 
         private static void handleRoute(TestSelectDestActivity activity, Bundle msgData, boolean status) {
             if(!status) {
-                activity.ttsHelper.speakString("목적지 까지의 경로를 가져올 수 없습니다", 1f, 1f);
+                activity.ttsHelper.speakString("목적지 까지의 경로를 가져올 수 없습니다", 1);
                 return;
             }
             activity.bundle.putParcelableArrayList("route", msgData.getParcelableArrayList("route"));
@@ -136,7 +136,7 @@ public class TestSelectDestActivity extends AppCompatActivity{
         Button destYesBT = findViewById(R.id.destYesBt);
         destYesBT.setOnClickListener(v -> {
             if(!finishGetDeparture) {
-                ttsHelper.speakString("출발지 정보를 가져오지 못했습니다", 1f, 1f);
+                ttsHelper.speakString("출발지 정보를 가져오지 못했습니다", 1);
                 return;
             }
             Poi destinationLocation = destinationLocations.get(0);

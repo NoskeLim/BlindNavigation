@@ -34,8 +34,10 @@ public class DestinationCallback implements Callback {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String str = Objects.requireNonNull(response.body()).string();
         DestinationResponse locationResponse = mapper.readValue(str, DestinationResponse.class);
-
-        for (DestinationCallbackListener listener : listeners)
-            listener.onSuccessGetDestination(locationResponse.getPois());
+        if(response.code() != 200) onFailure(call, new IOException());
+        else {
+            for (DestinationCallbackListener listener : listeners)
+                listener.onSuccessGetDestination(locationResponse.getPois());
+        }
     }
 }
