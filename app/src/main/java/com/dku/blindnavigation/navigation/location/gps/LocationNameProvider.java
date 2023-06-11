@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class LocationNameProvider {
-    public static final int EVENT_TYPE = 200;
+    public static final int EVENT_TYPE = 300;
     private final Handler handler;
 
     public LocationNameProvider(Handler handler) {

@@ -142,7 +142,7 @@ public class TestLocationActivity extends AppCompatActivity {
     private void initTTS() {
         ttsHelper = new TTSHelper(this);
         Button ttsButton = findViewById(R.id.ttsFunctionTest);
-        ttsButton.setOnClickListener(v -> ttsHelper.speakString("TTS 기능 테스트", 1, 1));
+        ttsButton.setOnClickListener(v -> ttsHelper.speakString("TTS 기능 테스트", 1));
     }
 
     private void getDepartureInfo() {

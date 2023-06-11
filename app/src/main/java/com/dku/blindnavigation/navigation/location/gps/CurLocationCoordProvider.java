@@ -20,7 +20,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
 public class CurLocationCoordProvider {
-    public static final int EVENT_TYPE = 100;
+    public static final int EVENT_TYPE = 200;
     private final Handler handler;
     private final Context activity;
     private final FusedLocationProviderClient fusedLocationClient;

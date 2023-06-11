@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RouteListener implements RouteCallbackListener{
-    public static final int EVENT_TYPE = 300;
+    public static final int EVENT_TYPE = 400;
     private final Handler handler;
 
     public RouteListener(Handler handler) {
