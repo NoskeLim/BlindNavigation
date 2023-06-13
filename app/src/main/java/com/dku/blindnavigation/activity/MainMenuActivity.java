@@ -33,21 +33,21 @@ public class MainMenuActivity extends AppCompatActivity {
                 backgroundPermGranted = PermissionUtils.checkBackgroundLocationPermissions(this);
         }
 
+        initButtons();
+    }
+
+    private void initButtons() {
         this.<Button>findViewById(R.id.routeGuideBT).setOnClickListener(v -> {
             if(locationPermGranted && backgroundPermGranted) {
                 Intent destinationSelectIntent = new Intent(this, DestinationSelectActivity.class);
                 startActivity(destinationSelectIntent);
             }
-
             else ttsHelper.speakString("위치 권한이 허용되지 않았습니다", 1);
         });
-
         this.<Button>findViewById(R.id.btConnectBT).setOnClickListener(v ->
                 startActivity(new Intent(this, BluetoothConnectActivity.class)));
-
         this.<Button>findViewById(R.id.settingBT).setOnClickListener(v ->
                 startActivity(new Intent(this, SettingActivity.class)));
-
         this.<Button>findViewById(R.id.exitBT).setOnClickListener(v ->
                 finish());
     }

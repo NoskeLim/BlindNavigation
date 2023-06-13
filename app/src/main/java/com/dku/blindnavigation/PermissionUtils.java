@@ -20,9 +20,11 @@ public class PermissionUtils {
     private static final String[] bluetoothPermissionsBeforeVersionCodeS = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.BLUETOOTH
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.BLUETOOTH_ADMIN
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     private static final String[] bluetoothPermissionsAfterVersionCodeS = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -32,7 +34,7 @@ public class PermissionUtils {
 
     private static void requestPermissions(Activity activity, List<String> permissions) {
         ActivityCompat.requestPermissions(activity,
-                permissions.toArray(new String[permissions.size()]),
+                permissions.toArray(new String[0]),
                 PERMISSION_CODE);
     }
 

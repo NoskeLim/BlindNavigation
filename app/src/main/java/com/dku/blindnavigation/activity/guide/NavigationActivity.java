@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.dku.blindnavigation.R;
+import com.dku.blindnavigation.activity.MainMenuActivity;
 import com.dku.blindnavigation.navigation.dto.Poi;
 import com.dku.blindnavigation.navigation.location.gps.CurLocationCoordProvider;
 import com.dku.blindnavigation.navigation.location.gps.LocationNameProvider;
@@ -85,6 +86,7 @@ public class NavigationActivity extends AppCompatActivity {
 
     private void stopNavigate() {
         stopService(new Intent(this, NavigationService.class));
+        startActivity(new Intent(this, MainMenuActivity.class));
         finish();
     }
 
