@@ -2,6 +2,7 @@ package com.dku.blindnavigation.bluetooth;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,13 +22,12 @@ public class BluetoothClientThread extends Thread {
             btSocket.connect();
             this.dos = new DataOutputStream(btSocket.getOutputStream());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.d("BluetoothClientThread", e.getMessage());
         }
     }
 
     public void sendMessage(String msg) throws IOException {
-        if(btSocket == null || !btSocket.isConnected())
-            throw new RuntimeException();
+        if(btSocket == null) throw new RuntimeException();
         dos.writeUTF(msg);
     }
 

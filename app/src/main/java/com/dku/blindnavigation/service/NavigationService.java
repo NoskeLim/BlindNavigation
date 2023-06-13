@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,12 +21,13 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.dku.blindnavigation.activity.guide.DestinationArriveActivity;
+import com.dku.blindnavigation.activity.guide.NavigationActivity;
+import com.dku.blindnavigation.bluetooth.BluetoothHelper;
 import com.dku.blindnavigation.navigation.direction.DirectionCalculator;
 import com.dku.blindnavigation.navigation.direction.DirectionType;
 import com.dku.blindnavigation.navigation.dto.Poi;
 import com.dku.blindnavigation.navigation.location.LocationUtils;
 import com.dku.blindnavigation.navigation.location.gps.CurLocationCoordProvider;
-import com.dku.blindnavigation.test.activity.TestMainActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
@@ -38,8 +40,8 @@ public class NavigationService extends Service {
     private Poi prevLocation;
     private Poi curLocation;
     private Queue<Poi> routes;
-
     private CurLocationCoordProvider curLocationCoordProvider;
+    private BluetoothHelper btHelper;
     private final Handler handler = new NavigationService.EventHandler(this);
 
     private static final class EventHandler extends Handler {
@@ -68,7 +70,8 @@ public class NavigationService extends Service {
                 assert nextLocation != null;
                 DirectionType nextDirection =
                         DirectionCalculator.getNextDirection(service.prevLocation, service.curLocation, nextLocation);
-                Log.d(TAG, nextDirection.toString());
+                service.btHelper.sendDirectionToDevice(nextDirection);
+                Toast.makeText(service, nextDirection.toString(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -78,9 +81,15 @@ public class NavigationService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             createNotificationChannel();
         startForeground(1, createNotification());
+        btHelper = new BluetoothHelper(this);
+        if(!btHelper.connectBluetoothDevice()) {
+            throw new RuntimeException();
+        }
 
         curLocation = intent.getParcelableExtra("departureLocation");
         routes = new LinkedList<>(intent.getParcelableArrayListExtra("route"));
+        initTestRoutes();
+
         double startPhoneDegree = intent.getDoubleExtra("degree", 0.0);
 
         Poi nextLocation = getNextLocation(curLocation);
@@ -92,6 +101,8 @@ public class NavigationService extends Service {
         assert nextLocation != null;
         DirectionType nextDirection =
                 DirectionCalculator.getFirstDirection(curLocation, nextLocation, startPhoneDegree);
+        btHelper.sendDirectionToDevice(nextDirection);
+        Toast.makeText(this, nextDirection.toString(), Toast.LENGTH_LONG).show();
 
         curLocationCoordProvider = new CurLocationCoordProvider(this, handler);
         curLocationCoordProvider.startRequestLocation();
@@ -99,9 +110,34 @@ public class NavigationService extends Service {
         return START_NOT_STICKY;
     }
 
+    private void initTestRoutes() {
+        routes.clear();
+        Poi[] pois = {
+                new Poi(37.320784, 127.126376),
+                new Poi(37.320614, 127.126157),
+                new Poi(37.320802, 127.125933),
+                new Poi(37.321085, 127.126281),
+                new Poi(37.321077, 127.126449),
+                new Poi(37.320937, 127.126468),
+                new Poi(37.320831, 127.126328),
+
+                new Poi(37.320784, 127.126376),
+                new Poi(37.320831, 127.126328),
+                new Poi(37.320937, 127.126468),
+                new Poi(37.321077, 127.126449),
+                new Poi(37.321085, 127.126281),
+                new Poi(37.320802, 127.125933),
+                new Poi(37.320614, 127.126157),
+                new Poi(37.320784, 127.126376),
+        };
+        for (Poi poi : pois) routes.offer(poi);
+    }
+
     @Override
     public void onDestroy() {
+        Log.d("NavigationService", "onDestroy called");
         curLocationCoordProvider.stopRequestLocation();
+        btHelper.disconnectDevice();
         super.onDestroy();
     }
 
@@ -119,7 +155,6 @@ public class NavigationService extends Service {
     private boolean checkReachNextLocation(Poi curLocation) {
         Poi nextLocationCoord = routes.peek();
         if (nextLocationCoord == null) {
-            Log.d(TAG, "arrive destination");
             arriveDestination();
             return false;
         }
@@ -130,6 +165,7 @@ public class NavigationService extends Service {
     }
 
     private void arriveDestination() {
+        Toast.makeText(this, "arrive", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, DestinationArriveActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -157,7 +193,7 @@ public class NavigationService extends Service {
     }
 
     private Notification createNotification() {
-        Intent notificationIntent = new Intent(this, TestMainActivity.class);
+        Intent notificationIntent = new Intent(this, NavigationActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
         return new NotificationCompat.Builder(this, CHANNEL_ID)

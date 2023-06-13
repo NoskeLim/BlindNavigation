@@ -16,17 +16,17 @@
         android:textColor="@color/white"
         android:textSize="50sp"
         android:textAlignment="center"
-        android:text="이동 중" />
+        android:text="@string/moving" />
 
     <Button
         android:id="@+id/nearLocationNameBT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="근처 위치" />
+        android:text="@string/nearLocation" />
 
     <Button
         android:id="@+id/stopGuideBT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="안내 취소" />
+        android:text="@string/cancelGuide" />
 </LinearLayout>

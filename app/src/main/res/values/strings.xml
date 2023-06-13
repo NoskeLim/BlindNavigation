@@ -3,9 +3,6 @@
     <string name="sk_api_location_url">https://apis.openapi.sk.com/tmap/pois</string>
     <string name="sk_api_route_url">https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1</string>
     <string name="sk_api_key">4jsuwXbPCf8uKW86qFnwp4IYudve7pvp6VJBATfb</string>
-    <string name="locationRelatedTest">위치 관련 테스트</string>
-    <string name="ttsFunctionTest">TTS 기능 테스트</string>
-    <string name="title_activity_splash">SplashActivity</string>
     <string name="mainMenuTitle">NAVI</string>
     <string name="routeGuideBT">경로 안내</string>
     <string name="btConnect">블루투스 연결</string>
@@ -19,6 +16,12 @@
     <string name="inquiry">문의사항</string>
     <string name="usage">사용법</string>
     <string name="ttsSpeed">TTS 속도</string>
-    <string name="testTTS">테스트</string>
     <string name="saveTTSSpeed">저장</string>
+    <string name="searchBTDevice">블루투스 장치 검색</string>
+    <string name="no">아니오</string>
+    <string name="yes">예</string>
+    <string name="moving">이동 중</string>
+    <string name="nearLocation">근처 위치</string>
+    <string name="cancelGuide">안내 취소</string>
+    <string name="checkTTSSpeed">TTS 속도 확인</string>
 </resources>
