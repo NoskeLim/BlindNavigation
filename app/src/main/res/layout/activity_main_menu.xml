@@ -1,66 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical"
-    tools:context=".activity.MainMenuActivity"
-    android:background="@color/black">
+    tools:context=".activity.MainMenuActivity">
 
+
+    <!--Main Title -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="157dp"
+            android:layout_height="200dp"
+            android:src="@drawable/capstone_icon" />
 
         <TextView
             android:id="@+id/mainMenuTitleTV"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="294dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="50sp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:text="@string/mainMenuTitle" />
+            android:text="@string/mainMenuTitle"
+            android:gravity="center"
+            android:textColor="@color/yellow"
+            android:textSize="100sp" />
     </LinearLayout>
 
+    <!-- 경로 안내, 블루투스 연결-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
+        <!-- 경로 안내 -->
         <Button
             android:id="@+id/routeGuideBT"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rectangle_button"
+            android:backgroundTint="@color/yellow"
+            android:textColor="#000000"
+            android:textSize="68sp"
             android:text="@string/routeGuideBT" />
 
+        <!-- 블루투스 연결-->
         <Button
             android:id="@+id/btConnectBT"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rectangle_button"
+            android:backgroundTint="@color/yellow"
+            android:textColor="#000000"
+            android:textSize="50sp"
             android:text="@string/btConnect" />
     </LinearLayout>
 
+    <!-- 환경 설정, 종료-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
 
+        <!-- 환경설정 (아직은 비활성화) -->
         <Button
+            android:enabled="true"
             android:id="@+id/settingBT"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rectangle_button"
+            android:backgroundTint="@color/yellow"
+            android:textColor="#000000"
+            android:textSize="68sp"
             android:text="@string/setting" />
 
+        <!-- 종료 -->
         <Button
             android:id="@+id/exitBT"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rectangle_button"
+            android:backgroundTint="@color/yellow"
+            android:textColor="#000000"
+            android:textSize="90sp"
             android:text="@string/exit" />
     </LinearLayout>
 </LinearLayout>

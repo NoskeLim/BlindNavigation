@@ -8,9 +8,37 @@
     android:orientation="vertical"
     tools:context=".activity.guide.DestinationArriveActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="목적지\n도착"
+            android:textAlignment="center"
+            android:textColor="@color/yellow"
+            android:textSize="60sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="412dp"
+        android:layout_height="390dp"
+        android:gravity="center_horizontal"
+        android:src="@drawable/capstone_icon" />
+
     <Button
         android:id="@+id/arriveDestToMainBT"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/toMain" />
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_button"
+        android:backgroundTint="@color/yellow"
+        android:text="@string/toMain"
+        android:textColor="#000000"
+        android:textSize="60sp" />
 </LinearLayout>
