@@ -75,7 +75,7 @@
 
         <!-- 환경설정 (아직은 비활성화) -->
         <Button
-            android:enabled="true"
+            android:enabled="false"
             android:id="@+id/settingBT"
             android:layout_weight="1"
             android:layout_width="0dp"
