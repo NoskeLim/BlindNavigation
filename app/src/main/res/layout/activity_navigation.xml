@@ -13,20 +13,37 @@
         android:id="@+id/textView9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="50sp"
+        android:textSize="100sp"
         android:textAlignment="center"
-        android:text="@string/moving" />
+        android:textColor="@color/yellow"
+        android:text="이동 중" />
+
+    <ImageView
+        android:layout_width="412dp"
+        android:layout_height="390dp"
+        android:gravity="center_horizontal"
+        android:src="@drawable/capstone_icon" />
 
     <Button
         android:id="@+id/nearLocationNameBT"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/nearLocation" />
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_button"
+        android:backgroundTint="@color/yellow"
+        android:textColor="#000000"
+        android:textSize="50sp"
+        android:text="근처 위치"/>
 
     <Button
         android:id="@+id/stopGuideBT"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cancelGuide" />
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_button"
+        android:backgroundTint="@color/yellow"
+        android:textColor="#000000"
+        android:textSize="50sp"
+        android:text="안내 취소" />
+
 </LinearLayout>
