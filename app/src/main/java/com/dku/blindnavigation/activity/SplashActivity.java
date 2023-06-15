@@ -14,14 +14,12 @@ import com.dku.blindnavigation.activity.bluetooth.BluetoothConnectActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private ImageView capstone_icon;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        capstone_icon = findViewById(R.id.logo);
+        ImageView capstone_icon = findViewById(R.id.logo);
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         capstone_icon.startAnimation(anim);
 

@@ -24,4 +24,5 @@
     <string name="nearLocation">근처 위치</string>
     <string name="cancelGuide">안내 취소</string>
     <string name="checkTTSSpeed">TTS 속도 확인</string>
+    <string name="arriveDestination">목적지\n도착</string>
 </resources>

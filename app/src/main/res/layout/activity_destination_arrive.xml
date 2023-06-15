@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="목적지\n도착"
+            android:text="@string/arriveDestination"
             android:textAlignment="center"
             android:textColor="@color/yellow"
             android:textSize="60sp" />
