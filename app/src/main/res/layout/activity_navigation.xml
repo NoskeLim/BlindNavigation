@@ -16,7 +16,7 @@
         android:textSize="100sp"
         android:textAlignment="center"
         android:textColor="@color/yellow"
-        android:text="이동 중" />
+        android:text="@string/moving" />
 
     <ImageView
         android:layout_width="412dp"
@@ -33,7 +33,7 @@
         android:backgroundTint="@color/yellow"
         android:textColor="#000000"
         android:textSize="50sp"
-        android:text="근처 위치"/>
+        android:text="@string/nearLocation"/>
 
     <Button
         android:id="@+id/stopGuideBT"
@@ -44,6 +44,6 @@
         android:backgroundTint="@color/yellow"
         android:textColor="#000000"
         android:textSize="50sp"
-        android:text="안내 취소" />
+        android:text="@string/cancelGuide" />
 
 </LinearLayout>
