@@ -26,7 +26,7 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="412dp"
+        android:layout_width="match_parent"
         android:layout_height="390dp"
         android:gravity="center_horizontal"
         android:src="@drawable/capstone_icon" />
